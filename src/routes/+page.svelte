@@ -16,10 +16,10 @@
 <main class="min-h-screen bg-black m-5">
     <div class="container mx-auto">
         <h1 class="font-sans font-bold text-2xl xl:text-3xl text-center">
-            Thrash Metal Radio Playlist
+            Metal Radio Playlist
         </h1>
         <!-- Topmost tool area -->
-        <div class="w-full md:w-8/12 lg:w-6/12 mt-8 mb-2 lg:mt-10 lg:mb-3 mx-auto">
+        <div class="w-full md:w-10/12 lg:w-6/12 mt-8 mb-2 lg:mt-10 lg:mb-3 mx-auto">
             <Search bind:page/>
             <QueryStat
                     page={page}
@@ -28,7 +28,7 @@
                     timeSpent={data ? data.timeSpent : 0}
             />
         </div>
-        <ul class="w-full md:w-8/12 lg:w-6/12 mb-5 mx-auto">
+        <ul class="w-full md:w-10/12 lg:w-6/12 mb-5 mx-auto">
             {#if data}
                 {#each data.items as item}
                     <li class="border border-x-0 border-t-0 border-dashed border-green-500 pt-4 pb-2.5">
