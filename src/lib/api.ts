@@ -54,16 +54,22 @@ export async function queryPlaylist(args: {
 }): Promise<PlaylistQueryResult> {
     const {fetch, origin, params} = args
 
-    const page = params.get('page') ?? '1',
+    const artistId = params.get('artist_id') ?? '0' ,
+        channelId = params.get('channel_id') ?? '0',
+        page = params.get('page') ?? '1',
         perPage = params.get('per_page') ?? '20',
-        search = params.get('search') ?? ''
+        search = params.get('search') ?? '',
+        trackId = params.get('track_id') ?? '0'
 
     const f = fetch ?? window.fetch
     const p = new URLSearchParams()
 
+    p.set('artist_id', artistId)
+    p.set('channel_id', channelId)
     p.set('page', page)
     p.set('per_page', perPage)
     p.set('search', search)
+    p.set('track_id', trackId)
 
     const r = await f(`${getEndpoint()}/playlist?${p.toString()}`, {
         method: 'GET',

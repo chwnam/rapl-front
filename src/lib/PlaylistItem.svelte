@@ -3,23 +3,36 @@
     import type {PlayItem} from '$lib/api'
     import {formatLength} from '$lib/api'
 
+    import {goto} from '$app/navigation'
     import youtube_music from '$lib/assets/youtube-music.svg'
     import youtube from '$lib/assets/youtube.svg'
+    import ChannelText from '$lib/ChannelText.svelte'
 
+    export let page: number
     export let item: PlayItem
+
+    function invalidateQuery(params: string) {
+        page = 1
+        goto(`?${(new URLSearchParams(params)).toString()}`)
+    }
 </script>
 
 <section class="flex flex-col justify-center items-between md:flex-row md:justify-between">
     <div class="min-w-[128px] mb-3 md:my-1.5 md:mr-3 grow-0 mx-auto">
         <img src="https://{item.art_url}?width=256&height=256&quality=low"
              class="w-[128px] h-[128px]"
-             alt="Cover art of {item.artist_name} - {item.title}" />
+             alt="Cover art of {item.artist_name} - {item.title}"/>
     </div>
     <div class="grow flex flex-col">
         <div class="flex flex-row justify-between items-center mb-0">
-            <div class="artist-name text-base md:text-lg leading-tight" title="Song title">
-                {item.title}
-            </div>
+            <a class="artist-name text-base md:text-lg leading-tight text-green-300"
+               title="Song title"
+               href="?track_id={item.track_id}"
+               on:click={(e) => {
+                   e.preventDefault()
+                   invalidateQuery(e.target.getAttribute('href'))
+               }}
+            >{item.title}</a>
             <div class="started text-xs text-right" title="Started">
                 <time datetime="{moment.unix(item.started).format('YYYY-MM-DDTHH:mm:ssZZ')}">
                     {moment.unix(item.started).format('YYYY-MM-DD HH:mm:ss')}
@@ -27,13 +40,20 @@
             </div>
         </div>
         <div class="flex flex-row justify-between items-end">
-            <div class="track-name text-sm md:text-base leading-tight before:content-['-'] ms-1 before:me-1"
-                 title="Artist">
-                {item.artist_name}
-            </div>
+            <a class="track-name text-sm md:text-base leading-tight before:content-['-'] ms-1 before:me-1 text-green-300"
+               title="Artist"
+               href="?artist_id={item.artist_id}"
+               on:click={(e) => {
+                   e.preventDefault()
+                   invalidateQuery(e.target.getAttribute('href'))
+               }}
+            >{item.artist_name}</a>
             <div class="length text-xs text-right" title="Length">
                 {formatLength(item.length)}
             </div>
+        </div>
+        <div class="text-xs mt-1 md:mt-4 text-right" title="Channel">
+            <ChannelText channelId={item.channel_id}/>
         </div>
         <div class="flex flex-row justify-between md:justify-start mt-4 grow items-end">
             <div class="mb-2">

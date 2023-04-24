@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {goto} from '$app/navigation'
+    import {goto, invalidateAll} from '$app/navigation'
     import {page as storesPage} from '$app/stores'
 
     export let page: number
@@ -7,10 +7,15 @@
 
     function invalidateQuery(query: string) {
         const newParams = new URLSearchParams($storesPage.url.searchParams.toString())
-        newParams.set('search', query)
+        newParams.set('artist_id', '0')
+        newParams.set('channel_id', '0')
         newParams.set('page', '1')
+        newParams.set('search', query)
+        newParams.set('track_id', '0')
         page = 1
-        goto(`?${newParams.toString()}`)
+        goto(`?${newParams.toString()}`).then(() => {
+            invalidateAll()
+        })
     }
 </script>
 
