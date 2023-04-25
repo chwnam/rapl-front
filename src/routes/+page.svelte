@@ -11,6 +11,7 @@
     import Loading from '$lib/Loading.svelte'
     import Error from '$lib/Error.svelte'
     import Channels from '$lib/Channels.svelte'
+    import SearchBy from '$lib/SearchBy.svelte'
 
     const origin = $storesPage.url.origin
 
@@ -46,13 +47,11 @@
                     timeSpent={$playlist.data ? $playlist.data.timeSpent : 0}
             />
 
-            <p class="my-2 text-xs">
-                {#if artistId}
-                    Search by artist id "{artistId}"
-                {:else if trackId}
-                    Search by track id "{trackId}"
-                {/if}
-            </p>
+            <SearchBy
+                    artistId={artistId}
+                    trackId={trackId}
+                    items={$playlist.data?.items}
+            />
 
             <Channels bind:page/>
 
@@ -68,7 +67,7 @@
                 {#if $playlist.data}
                     {#each $playlist.data.items as item}
                         <li class="border border-x-0 border-t-0 border-dashed border-green-500 pt-4 pb-2.5">
-                            <PlaylistItem item={item}/>
+                            <PlaylistItem item={item} bind:page/>
                         </li>
                     {/each}
                 {/if}

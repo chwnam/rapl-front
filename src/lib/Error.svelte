@@ -1,7 +1,7 @@
 <script lang="ts">
-    export const message = ''
+    export let message
 </script>
 
-<div>
+<div class="my-5">
     Error! {message}
 </div>
