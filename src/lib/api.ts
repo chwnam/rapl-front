@@ -47,31 +47,17 @@ export function getEndpoint(): string {
     return getApiUrl() + '/wp-json/rapl/v1'
 }
 
-export async function queryPlaylist(args: {
-    fetch?: (input: (URL | RequestInfo), init?: (RequestInit | undefined)) => Promise<Response>
+export async function queryPlaylist(
     origin: string,
-    params: URLSearchParams,
+    params: { [key: string]: string | number
 }): Promise<PlaylistQueryResult> {
-    const {fetch, origin, params} = args
-
-    const artistId = params.get('artist_id') ?? '0' ,
-        channelId = params.get('channel_id') ?? '0',
-        page = params.get('page') ?? '1',
-        perPage = params.get('per_page') ?? '20',
-        search = params.get('search') ?? '',
-        trackId = params.get('track_id') ?? '0'
-
-    const f = fetch ?? window.fetch
     const p = new URLSearchParams()
 
-    p.set('artist_id', artistId)
-    p.set('channel_id', channelId)
-    p.set('page', page)
-    p.set('per_page', perPage)
-    p.set('search', search)
-    p.set('track_id', trackId)
+    for (const [key, value] of Object.entries(params)) {
+        p.set(key, value.toString())
+    }
 
-    const r = await f(`${getEndpoint()}/playlist?${p.toString()}`, {
+    const r = await fetch(`${getEndpoint()}/playlist?${p.toString()}`, {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',

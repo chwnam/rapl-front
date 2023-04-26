@@ -2,19 +2,13 @@
     import moment from 'moment'
     import type {PlayItem} from '$lib/api'
     import {formatLength} from '$lib/api'
-
-    import {goto} from '$app/navigation'
-    import youtube_music from '$lib/assets/youtube-music.svg'
-    import youtube from '$lib/assets/youtube.svg'
+    import {navigateTo} from '$lib/utils'
     import ChannelText from '$lib/ChannelText.svelte'
 
-    export let page: number
-    export let item: PlayItem
+    import youtube_music from '$lib/assets/youtube-music.svg'
+    import youtube from '$lib/assets/youtube.svg'
 
-    function invalidateQuery(params: string) {
-        page = 1
-        goto(`?${(new URLSearchParams(params)).toString()}`)
-    }
+    export let item: PlayItem
 </script>
 
 <section class="flex flex-col justify-center items-between md:flex-row md:justify-between">
@@ -30,7 +24,10 @@
                href="?track_id={item.track_id}"
                on:click={(e) => {
                    e.preventDefault()
-                   invalidateQuery(e.target.getAttribute('href'))
+                   navigateTo({
+                        track_id: item.track_id,
+                        page: 1
+                   })
                }}
             >{item.title}</a>
             <div class="started text-xs text-right" title="Started">
@@ -45,7 +42,10 @@
                href="?artist_id={item.artist_id}"
                on:click={(e) => {
                    e.preventDefault()
-                   invalidateQuery(e.target.getAttribute('href'))
+                   navigateTo({
+                        artist_id: item.artist_id,
+                        page: 1
+                   })
                }}
             >{item.artist_name}</a>
             <div class="length text-xs text-right" title="Length">

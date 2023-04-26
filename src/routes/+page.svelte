@@ -4,27 +4,19 @@
     import type {PlaylistQueryResult} from '$lib/api'
     import {queryPlaylist} from '$lib/api'
 
+    import Error from '$lib/Error.svelte'
     import Pagination from '$lib/Pagination.svelte'
     import PlaylistItem from '$lib/PlaylistItem.svelte'
     import QueryStat from '$lib/QueryStat.svelte'
     import Search from '$lib/Search.svelte'
     import Loading from '$lib/Loading.svelte'
-    import Error from '$lib/Error.svelte'
     import Channels from '$lib/Channels.svelte'
     import SearchBy from '$lib/SearchBy.svelte'
+    import Top from '$lib/Top.svelte'
 
-    const origin = $storesPage.url.origin
-
-    let page = parseInt($storesPage.url.searchParams.get('page') ?? '1')
-
-    $: params = $storesPage.url.searchParams
-    $: artistId = parseInt(params.get('artist_id') ?? '0')
-    $: trackId = parseInt(params.get('track_id') ?? '0')
     $: playlist = createQuery<PlaylistQueryResult, Error>({
-        queryKey: ['playlist', params],
-        queryFn: () => {
-            return queryPlaylist({origin, params})
-        },
+        queryKey: ['playlist', $storesPage.data],
+        queryFn: () => queryPlaylist($storesPage.url.origin, {...$storesPage.data}),
     })
 </script>
 
@@ -39,21 +31,23 @@
         </h1>
         <!-- Topmost tool area -->
         <div class="w-full md:w-10/12 lg:w-6/12 mt-8 mb-1 lg:mt-10 lg:mb-2 mx-auto">
-            <Search bind:page/>
+            <Search/>
+
             <QueryStat
-                    page={page}
+                    page={$storesPage.data.page}
                     total={$playlist.data ? $playlist.data.total : 0}
                     totalPages={$playlist.data ? $playlist.data.totalPages : 0}
                     timeSpent={$playlist.data ? $playlist.data.timeSpent : 0}
             />
 
             <SearchBy
-                    artistId={artistId}
-                    trackId={trackId}
-                    items={$playlist.data?.items}
+                    artistId={$storesPage.data.artist_id}
+                    trackId={$storesPage.data.track_id}
+                    search={$storesPage.data.search}
+                    items={$playlist.data ? $playlist.data.items : []}
             />
 
-            <Channels bind:page/>
+            <Channels params={$storesPage.data} />
 
             {#if $playlist.isLoading}
                 <Loading/>
@@ -67,7 +61,7 @@
                 {#if $playlist.data}
                     {#each $playlist.data.items as item}
                         <li class="border border-x-0 border-t-0 border-dashed border-green-500 pt-4 pb-2.5">
-                            <PlaylistItem item={item} bind:page/>
+                            <PlaylistItem item={item} />
                         </li>
                     {/each}
                 {/if}
@@ -75,13 +69,15 @@
             <!-- Pagination -->
             <div class="w-full text-center">
                 <Pagination
-                        bind:page
+                        params={$storesPage.data}
                         totalPages={$playlist.data? $playlist.data.totalPages: 0}
                 />
             </div>
         {/if}
     </div>
 </main>
+
+<Top/>
 
 <style lang="postcss">
     :global(html) {

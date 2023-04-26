@@ -1,22 +1,6 @@
 <script lang="ts">
-    import {goto, invalidateAll} from '$app/navigation'
-    import {page as storesPage} from '$app/stores'
-
-    export let page: number
-    let search = $storesPage.url.searchParams.get('search') ?? ''
-
-    function invalidateQuery(query: string) {
-        const newParams = new URLSearchParams($storesPage.url.searchParams.toString())
-        newParams.set('artist_id', '0')
-        newParams.set('channel_id', '0')
-        newParams.set('page', '1')
-        newParams.set('search', query)
-        newParams.set('track_id', '0')
-        page = 1
-        goto(`?${newParams.toString()}`).then(() => {
-            invalidateAll()
-        })
-    }
+    import {page} from '$app/stores'
+    import {navigateTo} from '$lib/utils'
 </script>
 
 
@@ -26,10 +10,10 @@
            name="search"
            type="search"
            class="box-content grow shrink min-w-0 bg-black border-4 border-solid border-green-500 p-3 placeholder:text-green-500 placeholder:italic focus:outline-none"
-           bind:value={search}
+           value={$page.data.search}
            on:keyup={(e) => {
                if ('Enter' === e.key) {
-                   invalidateQuery(search)
+                   navigateTo({search:e.target.value})
                }
            }}
            placeholder="Search song title, or artist name ..."
@@ -38,7 +22,7 @@
             class="box-content grow-0 shrink-0 text-black bg-green-500 p-3 border-4 border-solid border-green-500"
             type="submit"
             on:click={() => {
-                invalidateQuery(search)
+                navigateTo({search:document.getElementById('search').value})
             }}
     >
         Search

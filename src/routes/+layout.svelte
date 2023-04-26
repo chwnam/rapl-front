@@ -7,6 +7,7 @@
         defaultOptions: {
             queries: {
                 enabled: browser,
+                refetchOnWindowFocus: false,
             },
         },
     })
