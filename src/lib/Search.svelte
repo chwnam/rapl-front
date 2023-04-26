@@ -9,7 +9,7 @@
     <input id="search"
            name="search"
            type="search"
-           class="box-content grow shrink min-w-0 bg-black border-4 border-solid border-green-500 p-3 placeholder:text-green-500 placeholder:italic focus:outline-none"
+           class="box-content grow shrink min-w-0 bg-black border-4 border-solid border-green-300 p-3 placeholder:text-green-500 placeholder:italic focus:outline-none"
            value={$page.data.search}
            on:keyup={(e) => {
                if ('Enter' === e.key) {
@@ -19,7 +19,7 @@
            placeholder="Search song title, or artist name ..."
     />
     <button
-            class="box-content grow-0 shrink-0 text-black bg-green-500 p-3 border-4 border-solid border-green-500"
+            class="box-content grow-0 shrink-0 text-black bg-green-300 p-3 border-4 border-solid border-green-300"
             type="submit"
             on:click={() => {
                 navigateTo({search:document.getElementById('search').value})

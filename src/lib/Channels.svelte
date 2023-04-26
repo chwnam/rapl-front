@@ -2,7 +2,7 @@
     import type {PageLoad} from '../routes/$types'
     import {getChannelName, navigateTo} from '$lib/utils'
 
-    const channelIds = [0, 192, 163]
+    const channelIds = [0, 192, 163, 149]
 
     export let params: PageLoad
 </script>

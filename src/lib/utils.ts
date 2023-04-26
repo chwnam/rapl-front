@@ -16,6 +16,9 @@ export function getChannelName(channelId: number | string, short = false): strin
         case 163:
             return short ? 'Power' : 'Power Metal'
 
+        case 149:
+            return short ? 'Heavy' : 'Heavy Metal'
+
         default:
             return ''
     }
