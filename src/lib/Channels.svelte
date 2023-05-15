@@ -7,12 +7,12 @@
     export let params: PageLoad
 </script>
 
-<div class="mt-5 mb-0">
+<div class="mt-5 mb-0 leading-7">
     {#each channelIds as channelId}
         {#if channelId === params.channel_id}
-            <span class="text-xs bg-green-700 text-black px-2 py-1 me-1">{getChannelName(channelId)}</span>
+            <span class="inline-block text-xs bg-green-700 text-black px-2 py-1 me-1">{getChannelName(channelId)}</span>
         {:else}
-            <span class="text-xs bg-green-300 text-black px-2 py-1 me-1 cursor-pointer">
+            <span class="inline-block text-xs bg-green-300 text-black px-2 py-1 me-1 cursor-pointer">
                 <a href={`?channel_id=${channelId}`} on:click={(e) => {
                     e.preventDefault()
                     navigateTo({

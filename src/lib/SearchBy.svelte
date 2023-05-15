@@ -1,11 +1,11 @@
 <script lang="ts">
-    import type {PlayItem} from '$lib/api'
+    import type {PlaylistItem} from '$lib/api'
     import {navigateTo} from '$lib/utils'
 
     export let artistId: number
     export let trackId: number
     export let search: string
-    export let items: PlayItem[] | undefined
+    export let items: PlaylistItem[] | undefined
 </script>
 
 <p class="my-2 text-xs">
