@@ -6,6 +6,6 @@ export const load: PageLoad = (async ({params, url}) => {
     return {
         track_id: parseInt(params.track_id),
         page: parseInt(p.get('page') ?? '1'),
-        per_page: parseInt(p.get('per_page') ?? '10'),
+        per_page: parseInt(p.get('per_page') ?? '20'),
     }
 }) satisfies PageLoad

@@ -1,6 +1,6 @@
 <script lang="ts">
     import type {PlaylistItem} from '$lib/api'
-    import {navigateTo} from '$lib/utils'
+    import {homeUrl, navigateTo} from '$lib/utils'
 
     export let artistId: number
     export let trackId: number
@@ -22,13 +22,7 @@
            class="ms-3 underline text-green-300"
            on:click={(e) => {
                e.preventDefault()
-               navigateTo({
-                    artist_id: 0,
-                    channel_id: 0,
-                    page:1,
-                    search:'',
-                    track_id: 0,
-               })
+               navigateTo(homeUrl())
            }}
         >Clear search</a>
     {/if}

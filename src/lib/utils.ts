@@ -1,5 +1,6 @@
 import {goto, invalidate} from '$app/navigation'
 import {PUBLIC_HOME_URL} from '$env/static/public'
+import {DEFAULT_HOME_URL} from '$lib/constants'
 import type {PageLoad} from '../routes/$types'
 
 export function pad(n: number): string {
@@ -36,14 +37,23 @@ export function getChannelName(channelId: number | string, short = false): strin
     }
 }
 
-export function navigateTo(params: PageLoad) {
+export function navigateTo(path: string, invalidateTrigger = '') {
+    return goto(path)
+        .then(() => {
+            if (invalidateTrigger.length) {
+                invalidate(invalidateTrigger).then()
+            }
+        })
+}
+
+export function createParam(params: PageLoad): string {
     const p = new URLSearchParams()
 
     for (const [key, value] of Object.entries(params)) {
         p.set(key, value.toString())
     }
 
-    return goto(homeUrl(`?${p.toString()}`)).then(() => invalidate('app:page'))
+    return p.toString()
 }
 
 export function unTrailingSlashIt(str: string): string {
@@ -59,5 +69,11 @@ export function trailingSlashIt(str: string): string {
 }
 
 export function homeUrl(path = ''): string {
-    return PUBLIC_HOME_URL + (path.length ? unTrailingSlashIt(path) : '')
+    const home_url = unTrailingSlashIt(PUBLIC_HOME_URL.length ? PUBLIC_HOME_URL : DEFAULT_HOME_URL)
+
+    if (path.length && !path.startsWith('/')) {
+        path = '/' + path
+    }
+
+    return home_url + (path.length ? unTrailingSlashIt(path) : '')
 }

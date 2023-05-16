@@ -1,10 +1,21 @@
-import {PUBLIC_API_URL, PUBLIC_DEFAULT_API_URL} from '$env/static/public'
+import {PUBLIC_API_URL} from '$env/static/public'
+import {DEFAULT_API_URL} from '$lib/constants'
 
-export type QueryResult<T> = {
-    items: Array<T>
+export type PlaybackCount = {
+    playback_count: number
+}
+
+export type PerformanceParams = {
+    timeSpent: number
+}
+
+export type PaginationParams = {
     total: number
     totalPages: number
-    timeSpent: number
+}
+
+export type QueryResult<T> = PerformanceParams & PaginationParams & {
+    items: Array<T>
 }
 
 export type Artist = {
@@ -20,15 +31,11 @@ export type Track = {
 }
 
 export type History = {
-    history_id: number
     network_id: number
     channel_id: number
     track_id: number
+    history_id: number
     started: number
-}
-
-export type PlaybackCount = Track & {
-    playback_count: number
 }
 
 export type YoutubeLinks = {
@@ -36,35 +43,38 @@ export type YoutubeLinks = {
     search: string
 }
 
-export type PlaylistItem = Artist & Track & History & {
+export type MediaLinks = {
     youtube: {
         video: YoutubeLinks
         music: YoutubeLinks
     }
 }
 
+export type PlaylistItem = Artist & Track & History & MediaLinks
+
 export type ArtistInfo = {
-    artist_info: Artist,
+    artist: Artist,
     total_tracks: number,
-    first_fetched: string,
-    last_fetched: string,
-    tracks: Array<PlaybackCount>,
-}
+    total_playback: number,
+    first_fetched: number,
+    last_fetched: number,
+    tracks: Array<Track & PlaybackCount & MediaLinks>,
+} & PerformanceParams & PaginationParams
 
 export type TrackInfo = {
-    track_info: Artist & Track,
-    first_fetched: string,
-    last_fetched: string,
-    history: Array<PlaybackCount>,
-}
+    track: Artist & Track,
+    first_fetched: number,
+    last_fetched: number,
+    history: Array<Omit<History, 'track_id'>>,
+} & MediaLinks & PerformanceParams & PaginationParams
 
 export type QueryParams = { [key: string]: string | number }
 
 export function getApiUrl(): string {
-    return PUBLIC_API_URL.length ? PUBLIC_API_URL : PUBLIC_DEFAULT_API_URL
+    return PUBLIC_API_URL.length ? PUBLIC_API_URL : DEFAULT_API_URL
 }
 
-export function getEndpoint(): string {
+export function getBaseEndpoint(): string {
     return getApiUrl() + '/wp-json/rapl/v1'
 }
 
@@ -74,7 +84,7 @@ export async function queryPlaylist(
 ): Promise<QueryResult<PlaylistItem>> {
     const urlParams = buildParams(params)
 
-    const r = await fetch(`${getEndpoint()}/playlist?${urlParams}`, {
+    const r = await fetch(`${getBaseEndpoint()}/playlist?${urlParams}`, {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
@@ -101,10 +111,10 @@ export async function queryTrackInfo(
     trackId: number,
     params: QueryParams,
     origin: string
-): Promise<QueryResult<TrackInfo>> {
+): Promise<TrackInfo> {
     const urlParams = buildParams(params)
 
-    const r = await fetch(`${getEndpoint()}/track/${trackId}?${urlParams}`, {
+    const r = await fetch(`${getBaseEndpoint()}/track/${trackId}?${urlParams}`, {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
@@ -114,16 +124,16 @@ export async function queryTrackInfo(
         },
     })
 
-    const items = (await r.json()) as Array<TrackInfo>,
-        total = r.headers.get('X-WP-Total'),
-        totalPages = r.headers.get('X-WP-TotalPages'),
+    const items = await r.json(),
+        total = r.headers.get('X-RAPL-Total'),
+        totalPages = r.headers.get('X-RAPL-TotalPages'),
         timeSpent = r.headers.get('X-Rapl-TimeSpent')
 
     return {
-        items,
-        total: null !== total ? parseInt(total) : 0,
-        totalPages: null !== totalPages ? parseInt(totalPages) : 0,
-        timeSpent: null !== timeSpent ? parseFloat(timeSpent) : 0.0,
+        ...items,
+        total,
+        totalPages,
+        timeSpent,
     }
 }
 
@@ -131,10 +141,10 @@ export async function queryArtistInfo(
     artistId: number,
     params: QueryParams,
     origin: string,
-): Promise<QueryResult<ArtistInfo>> {
+): Promise<ArtistInfo> {
     const urlParams = buildParams(params)
 
-    const r = await fetch(`${getEndpoint()}/artist/${artistId}?${urlParams}`, {
+    const r = await fetch(`${getBaseEndpoint()}/artist/${artistId}?${urlParams}`, {
         method: 'GET',
         mode: 'cors',
         cache: 'no-cache',
@@ -144,13 +154,13 @@ export async function queryArtistInfo(
         },
     })
 
-    const items = (await r.json()) as Array<ArtistInfo>,
-        total = r.headers.get('X-WP-Total'),
-        totalPages = r.headers.get('X-WP-TotalPages'),
+    const data = await r.json(),
+        total = r.headers.get('X-RAPL-Total'),
+        totalPages = r.headers.get('X-RAPL-TotalPages'),
         timeSpent = r.headers.get('X-Rapl-TimeSpent')
 
     return {
-        items,
+        ...data,
         total: null !== total ? parseInt(total) : 0,
         totalPages: null !== totalPages ? parseInt(totalPages) : 0,
         timeSpent: null !== timeSpent ? parseFloat(timeSpent) : 0.0,

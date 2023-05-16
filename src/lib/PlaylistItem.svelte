@@ -1,18 +1,18 @@
 <script lang="ts">
-    import moment from 'moment'
     import {formatLength, homeUrl} from '$lib/utils'
     import ChannelText from '$lib/ChannelText.svelte'
     import type {PlaylistItem} from '$lib/api'
 
     import youtube_music from '$lib/assets/youtube-music.svg'
     import youtube from '$lib/assets/youtube.svg'
+    import DateTimeField from '$lib/DateTimeField.svelte'
 
     export let item: PlaylistItem
 </script>
 
 <section class="flex flex-col justify-center items-between md:flex-row md:justify-between">
     <div class="min-w-[128px] mb-3 md:my-1.5 md:mr-3 grow-0 mx-auto">
-        <img src="https://{item.art_url}?width=256&height=256&quality=low"
+        <img src="https:{item.art_url}?width=256&height=256&quality=low"
              class="w-[128px] h-[128px]"
              alt="Cover art of {item.artist_name} - {item.title}"/>
     </div>
@@ -23,21 +23,19 @@
                href={homeUrl(`/track/${item.track_id}`)}
             >{item.title}</a>
             <div class="started text-xs text-right" title="Started">
-                <time datetime="{moment.unix(item.started).format('YYYY-MM-DDTHH:mm:ssZZ')}">
-                    {moment.unix(item.started).format('YYYY-MM-DD HH:mm:ss')}
-                </time>
+                <DateTimeField value={item.started}/>
             </div>
         </div>
         <div class="flex flex-row justify-between items-center">
             <a class="track-name text-sm md:text-base leading-tight before:content-['-'] ms-1 before:me-1 text-green-300"
                title="Artist"
-               href={homeUrl(`/track/${item.artist_id}`)}
+               href={homeUrl(`/artist/${item.artist_id}`)}
             >{item.artist_name}</a>
             <div class="length text-xs text-right" title="Length">
                 {formatLength(item.length)}
             </div>
         </div>
-        <div class="text-xs mt-1 md:mt-4 text-right" title="Channel">
+        <div class="text-xs mt-1 text-right" title="Channel">
             <ChannelText channelId={item.channel_id}/>
         </div>
         <div class="flex flex-row justify-between md:justify-start mt-4 grow items-end">

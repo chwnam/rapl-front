@@ -12,6 +12,7 @@
     import Loading from '$lib/Loading.svelte'
     import Channels from '$lib/Channels.svelte'
     import SearchBy from '$lib/SearchBy.svelte'
+    import {createParam, navigateTo} from '$lib/utils'
 
     $: playlist = createQuery<QueryResult<PlaylistItem>, Error>({
         queryKey: ['playlist', $storesPage.data],
@@ -41,7 +42,7 @@
             items={$playlist.data ? $playlist.data.items : []}
     />
 
-    <Channels params={$storesPage.data} />
+    <Channels params={$storesPage.data}/>
 
     {#if $playlist.isLoading}
         <Loading/>
@@ -55,7 +56,7 @@
         {#if $playlist.data}
             {#each $playlist.data.items as item}
                 <li class="border border-x-0 border-t-0 border-dashed border-green-500 pt-4 pb-2.5">
-                    <PlaylistItem item={item} />
+                    <PlaylistItem item={item}/>
                 </li>
             {/each}
         {/if}
@@ -63,8 +64,11 @@
     <!-- Pagination -->
     <div class="w-full text-center">
         <Pagination
-                params={$storesPage.data}
-                totalPages={$playlist.data? $playlist.data.totalPages: 0}
+                page={$storesPage.data.page}
+                totalPages={$playlist.data ? $playlist.data.totalPages : 0}
+                onClickPage={(page) => {
+                    navigateTo(`?${createParam({...$storesPage.data, page})}`, 'app:page')
+                }}
         />
     </div>
 {/if}
