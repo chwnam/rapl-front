@@ -1,10 +1,10 @@
 <script lang="ts">
-    const threshold = 150
+    const threshold = 250
 
     let hidden = true
 </script>
 
-<div class="flex justify-center items-center fixed bottom-5 right-5 select-none back-top-top" class:hidden>
+<div class="flex justify-center items-center absolute -bottom-2 right-0 select-none back-top-top" class:hidden>
     <a href={'#'}
        class="text-xs bg-green-300 px-2 py-1 text-black"
        on:click={() => {document.body.scrollIntoView()}}

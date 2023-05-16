@@ -21,11 +21,13 @@
     <Header/>
     <main class="min-h-screen m-5">
         <div class="container mx-auto">
-            <slot/>
+            <div class="relative w-full md:w-10/12 lg:w-6/12 mt-8 mb-1 lg:mt-10 lg:mb-2 mx-auto">
+                <slot/>
+                <Top/>
+            </div>
         </div>
     </main>
     <Footer/>
-    <Top/>
 </QueryClientProvider>
 
 <style lang="postcss">

@@ -10,7 +10,7 @@
                class="text-green-300"
                target="_blank">changwoo</a>
         </p>
-        <p class="text-xs">
+        <p class="text-xs text-right">
             <a href={DEFAULT_MCPL_URL}
                class="text-green-300"
                target="_blank">Music Camp Playlist</a>

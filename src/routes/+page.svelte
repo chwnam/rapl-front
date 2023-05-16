@@ -25,37 +25,35 @@
 </svelte:head>
 
 <!-- Topmost tool area -->
-<div class="w-full md:w-10/12 lg:w-6/12 mt-8 mb-1 lg:mt-10 lg:mb-2 mx-auto">
-    <Search/>
+<Search/>
 
-    <QueryStat
-            page={$storesPage.data.page}
-            total={$playlist.data ? $playlist.data.total : 0}
-            totalPages={$playlist.data ? $playlist.data.totalPages : 0}
-            timeSpent={$playlist.data ? $playlist.data.timeSpent : 0}
-    />
+<QueryStat
+        page={$storesPage.data.page}
+        total={$playlist.data ? $playlist.data.total : 0}
+        totalPages={$playlist.data ? $playlist.data.totalPages : 0}
+        timeSpent={$playlist.data ? $playlist.data.timeSpent : 0}
+/>
 
-    <SearchBy
-            artistId={$storesPage.data.artist_id}
-            trackId={$storesPage.data.track_id}
-            search={$storesPage.data.search}
-            items={$playlist.data ? $playlist.data.items : []}
-    />
+<SearchBy
+        artistId={$storesPage.data.artist_id}
+        trackId={$storesPage.data.track_id}
+        search={$storesPage.data.search}
+        items={$playlist.data ? $playlist.data.items : []}
+/>
 
-    <Channels params={$storesPage.data}/>
+<Channels params={$storesPage.data}/>
 
-    {#if $playlist.isLoading}
-        <Loading/>
-    {:else if $playlist.isError}
-        <Error message={$playlist.error.message}/>
-    {/if}
-</div>
+{#if $playlist.isLoading}
+    <Loading/>
+{:else if $playlist.isError}
+    <Error message={$playlist.error.message}/>
+{/if}
 
 {#if $playlist.isSuccess}
-    <ul class="w-full md:w-10/12 lg:w-6/12 mb-3 mx-auto">
+    <ul class="mb-5">
         {#if $playlist.data}
             {#each $playlist.data.items as item}
-                <li class="border border-x-0 border-t-0 border-dashed border-green-500 pt-4 pb-2.5">
+                <li class="border border-x-0 border-t-0 border-dashed border-green-500 pb-2.5">
                     <PlaylistItem item={item}/>
                 </li>
             {/each}

@@ -11,12 +11,12 @@
 </script>
 
 <section class="flex flex-col justify-center items-between md:flex-row md:justify-between">
-    <div class="min-w-[128px] mb-3 md:my-1.5 md:mr-3 grow-0 mx-auto">
+    <div class="min-w-full md:min-w-[128px] pt-4 pb-2 md:pb-0 mb-3 md:mb-1 md:pr-3 grow-0 text-center bg-green-950 md:bg-inherit">
         <img src="https:{item.art_url}?width=256&height=256&quality=low"
-             class="w-[128px] h-[128px]"
+             class="inline-block w-[128px] h-[128px]"
              alt="Cover art of {item.artist_name} - {item.title}"/>
     </div>
-    <div class="grow flex flex-col">
+    <div class="flex flex-col grow py-4">
         <div class="flex flex-row justify-between items-center mb-0">
             <a class="artist-name text-base md:text-lg leading-tight text-green-300"
                title="Track title"
