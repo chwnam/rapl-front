@@ -1,9 +1,13 @@
 <script lang="ts">
+    import {onMount} from 'svelte'
+
     const threshold = 250
 
     let hidden = true
 
-    let value = 0
+    onMount(async () => {
+        dispatchEvent(new Event('resize'))
+    })
 </script>
 
 <div id="top-button" class="flex justify-center items-center fixed bottom-[4.125rem] select-none back-top-top"
