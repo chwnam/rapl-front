@@ -10,9 +10,7 @@
     import Pagination from '$lib/Pagination.svelte'
     import Loading from '$lib/Loading.svelte'
     import DateTimeField from '$lib/DateTimeField.svelte'
-
-    import youtube_music from '$lib/assets/youtube-music.svg'
-    import youtube from '$lib/assets/youtube.svg'
+    import YoutubeLinks from '$lib/YoutubeLinks.svelte'
 
     $: trackInfo = createQuery<TrackInfo, Error>({
         queryKey: ['track', $storesPage.data],
@@ -69,42 +67,11 @@
                 <span class="float-left font-semibold min-w-[8rem]">Play count</span>
                 {$trackInfo.data.total}
             </li>
-            <li>
-                <span class="float-left font-semibold min-w-[8rem]">Youtube Music</span>
-                <div>
-                    <img src={youtube_music}
-                         type="image/svg+xml"
-                         class="inline-flex me-0.5"
-                         alt="Youtube music icon"
-                         width="18"
-                         height="18"
-                    />
-                    <a href={$trackInfo.data.youtube.music.direct}
-                       class="text-sm md:text-base me-1 text-green-300"
-                    >Direct</a> |
-                    <a href={$trackInfo.data.youtube.music.search}
-                       class="text-sm md:text-base ms-1 text-green-300"
-                    >Search</a>
-                </div>
-            </li>
-            <li>
-                <span class="float-left font-semibold min-w-[8rem]">Youtube Video</span>
-                <img src={youtube}
-                     type="image/svg+xml"
-                     class="inline-flex me-0.5"
-                     alt="Youtube music icon"
-                     width="18"
-                     height="18"
-                />
-                <a href={$trackInfo.data.youtube.video.direct}
-                   class="text-sm md:text-base me-1 text-green-300"
-                >Direct</a> |
-                <a href={$trackInfo.data.youtube.video.search}
-                   class="text-sm md:text-base ms-1 text-green-300"
-                >Search</a>
-            </li>
         </ul>
     </section>
+    <div class="flex justify-evenly md:justify-end mt-5 mb-2">
+        <YoutubeLinks item={$trackInfo.data.youtube} />
+    </div>
     <div class="text-right mt-2">
         <a href={homeUrl()} class="text-sm mt-4 text-green-300">&laquo; Back to Home</a>
     </div>

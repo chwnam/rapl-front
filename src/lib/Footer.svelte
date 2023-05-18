@@ -3,7 +3,7 @@
 </script>
 
 <footer class="container mx-auto mt-5">
-    <div class="w-full md:w-10/12 lg:w-6/12 bg-green-900 px-2 pt-2 pb-4 mx-auto">
+    <div class="w-full md:w-10/12 lg:w-6/12 bg-green-950 px-2 pt-2 pb-4 mx-auto">
         <p class="text-sm">
             {DEFAULT_TITLE}, by
             <a href={DEFAULT_BLOG_URL}

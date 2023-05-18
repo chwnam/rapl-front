@@ -1,16 +1,37 @@
 <script lang="ts">
     import {onMount} from 'svelte'
 
+    const body = document.documentElement || document.body
     const threshold = 250
+    const minGap = 8
 
     let hidden = true
+    let topButton: HTMLDivElement
+    let maxGap: number
+
+    function getButtonBottom(): string {
+        const gap = body.scrollHeight - body.scrollTop - window.innerHeight
+        let bottom: number
+
+        if (gap <= 0) {
+            bottom =  maxGap
+        } else if (gap < maxGap) {
+            bottom = maxGap - gap
+        } else {
+            bottom = minGap
+        }
+
+        return bottom + 'px'
+    }
 
     onMount(async () => {
+        topButton = document.getElementById('top-button') as HTMLDivElement
+        maxGap = minGap + document.querySelector('footer').getBoundingClientRect().height
         dispatchEvent(new Event('resize'))
     })
 </script>
 
-<div id="top-button" class="flex justify-center items-center fixed bottom-[4.125rem] select-none back-top-top"
+<div id="top-button" class="flex justify-center items-center fixed select-none back-top-top"
      class:hidden>
     <a href={'#'}
        class="text-xs bg-green-300 px-2 py-1 text-black"
@@ -20,21 +41,18 @@
 
 <svelte:window
     on:scroll={() => {
-        const target = document.documentElement || document.body || false
-
-        if (!target) {
+        if (!body) {
             return
         }
-
-        hidden = target.scrollTop <= threshold
+        hidden = body.scrollTop <= threshold
+        topButton.style.bottom = getButtonBottom()
     }}
     on:resize={() => {
-        const button = document.getElementById('top-button'),
-            relative = button.closest('div.relative')
-
+        const relative = topButton.closest('div.relative')
         if (relative) {
             const relRect = relative.getBoundingClientRect()
-            button.style.left = (relRect.right - button.clientWidth)+ 'px'
+            topButton.style.left = (relRect.right - topButton.clientWidth) + 'px'
+            topButton.style.bottom = getButtonBottom()
         }
     }}
 />

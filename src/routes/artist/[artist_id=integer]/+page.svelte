@@ -4,15 +4,13 @@
 
     import {DEFAULT_TITLE} from '$lib/constants'
     import Error from '$lib/Error.svelte'
-    import {queryArtistInfo} from '$lib/api'
     import type {ArtistInfo} from '$lib/api'
+    import {queryArtistInfo} from '$lib/api'
     import {createParam, homeUrl, navigateTo} from '$lib/utils'
     import Loading from '$lib/Loading.svelte'
     import Pagination from '$lib/Pagination.svelte'
-
-    import youtube_music from '$lib/assets/youtube-music.svg'
-    import youtube from '$lib/assets/youtube.svg'
     import DateTimeField from '$lib/DateTimeField.svelte'
+    import YoutubeLinks from '$lib/YoutubeLinks.svelte'
 
     $: artistInfo = createQuery<ArtistInfo, Error>({
         queryKey: ['artist', $storesPage.data],
@@ -88,35 +86,8 @@
                                class="text-green-300">{track.title}</a>
                         </h4>
                         <div class="">Play count: {track.playback_count}</div>
-                        <div class="flex justify-between md:justify-end">
-                            <div class="md:me-1">
-                                <img src={youtube_music}
-                                     type="image/svg+xml"
-                                     class="inline-flex me-0.5"
-                                     alt="Youtube music icon"
-                                     width="18"
-                                     height="18"
-                                />
-                                <a href={track.youtube.music.direct}
-                                   class="text-sm me-1 text-green-300 tracking-tight md:tracking-normal"
-                                >Direct</a>|<a href={track.youtube.music.search}
-                                               class="text-sm ms-1 text-green-300 tracking-tight md:tracking-normal"
-                            >Search</a>
-                            </div>
-                            <div class="md:ms-1">
-                                <img src={youtube}
-                                     type="image/svg+xml"
-                                     class="inline-flex me-0.5"
-                                     alt="Youtube music icon"
-                                     width="18"
-                                     height="18"
-                                />
-                                <a href={track.youtube.video.direct}
-                                   class="text-sm me-1 text-green-300 tracking-tight md:tracking-normal"
-                                >Direct</a>|<a href={track.youtube.video.search}
-                                               class="text-sm ms-1 text-green-300 tracking-tight md:tracking-normal"
-                            >Search</a>
-                            </div>
+                        <div class="flex justify-between md:justify-end mt-1">
+                            <YoutubeLinks item={track.youtube}/>
                         </div>
                     </div>
                 </div>

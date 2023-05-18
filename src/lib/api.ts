@@ -39,15 +39,18 @@ export type History = {
 }
 
 export type YoutubeLinks = {
-    direct: string
-    search: string
+    video: {
+        direct: string
+        search: string
+    }
+    music: {
+        direct: string
+        search: string
+    }
 }
 
 export type MediaLinks = {
-    youtube: {
-        video: YoutubeLinks
-        music: YoutubeLinks
-    }
+    youtube: YoutubeLinks
 }
 
 export type PlaylistItem = Artist & Track & History & MediaLinks
