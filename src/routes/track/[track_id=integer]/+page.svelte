@@ -44,7 +44,7 @@
         <figure class="mt-2 md:mr-8 grow-1 w-[192px] h-[192px]">
             <img src={`https:${$trackInfo.data.track.art_url}?width=512&height=512&quality=mid`}
                  class=""
-                 alt="Cover art of {$trackInfo.data.track.artist_name} - {$trackInfo.data.track.title}">
+                 alt="Cover art of {$trackInfo.data.artist_name} - {$trackInfo.data.title}">
         </figure>
         <ul id="track-info" class="mt-4 md:mt-0 grow-1 leading-6 md:leading-7">
             <li>
@@ -70,7 +70,7 @@
         </ul>
     </section>
     <div class="flex justify-evenly md:justify-end mt-5 mb-2">
-        <YoutubeLinks item={$trackInfo.data.youtube} />
+        <YoutubeLinks item={$trackInfo.data.track.youtube} />
     </div>
     <div class="text-right mt-2">
         <a href={homeUrl()} class="text-sm mt-4 text-green-300">&laquo; Back to Home</a>
