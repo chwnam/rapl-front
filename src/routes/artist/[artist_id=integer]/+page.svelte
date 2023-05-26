@@ -12,14 +12,17 @@
     import DateTimeField from '$lib/DateTimeField.svelte'
     import YoutubeLinks from '$lib/YoutubeLinks.svelte'
 
+    let orderby = $storesPage.data.orderby
+
     $: artistInfo = createQuery<ArtistInfo, Error>({
         queryKey: ['artist', $storesPage.data],
         queryFn: () => {
             return queryArtistInfo(
                 $storesPage.data.artist_id,
                 {
+                    orderby: orderby,
                     page: $storesPage.data.page,
-                    per_page: $storesPage.data.per_page
+                    per_page: $storesPage.data.per_page,
                 },
                 $storesPage.url.origin
             )
@@ -69,7 +72,19 @@
         <a href={homeUrl()} class="text-sm text-green-300">&laquo; Back to Home</a>
     </div>
 
-    <h2 class="font-bold text-xl mt-8">Fetched Songs</h2>
+    <div class="flex mt-8 justify-between align-center">
+        <h2 class="font-bold text-xl">Fetched Songs</h2>
+        <label for="track-order" class="sr-only">Order</label>
+        <select id="track-order"
+                class="text-xs text-green-300 bg-black border border-1 border-green-300 px-2"
+                bind:value={orderby}>
+            <option value="title:asc">Title Asc.</option>
+            <option value="title:desc">Title Desc.</option>
+            <option value="playback_count:asc">Playback Count Asc.</option>
+            <option value="playback_count:desc">Playback Count Desc.</option>
+        </select>
+    </div>
+
     <ul class="mt-2 md:pl-4 w-full mb-5">
         {#each $artistInfo.data.tracks as track}
             <li class="border border-x-0 border-t-0 border-dashed border-green-500 pt-4 pb-2.5">
