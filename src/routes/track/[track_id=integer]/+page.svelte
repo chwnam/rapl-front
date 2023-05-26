@@ -53,7 +53,7 @@
             </li>
             <li>
                 <span class="float-left font-semibold min-w-[8rem]">Artist</span>
-                {$trackInfo.data.track.artist_name}
+                <a href={homeUrl(`artist/${$trackInfo.data.track.artist_id}`)} class="text-green-300">{$trackInfo.data.track.artist_name}</a>
             </li>
             <li>
                 <span class="float-left font-semibold min-w-[8rem]">Length</span>
@@ -79,7 +79,7 @@
     <h2 class="font-bold text-xl mt-8">Recently Played</h2>
     <ul class="mt-2 md:pl-4 w-full md:w-8/12 text-sm mb-5">
         {#each $trackInfo.data.history as item}
-            <li>
+            <li class="mt-2">
                 <div class="flex flex-row justify-between">
                     <DateTimeField value={item.started}/>
                     <div>via <strong>{getChannelName(item.channel_id)}</strong> channel.</div>
