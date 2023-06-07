@@ -28,6 +28,7 @@ export type Track = {
     title: string
     length: number
     art_url: string
+    track_count: number
 }
 
 export type History = {
