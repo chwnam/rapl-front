@@ -28,7 +28,7 @@
 
     <label for="page" class="sr-only">Page number</label>
     <input id="page"
-           class="bg-black text-xl md:text-base w-10 no-spinner border border-dashed border-green-500 text-green-300 text-center px-2 me-1 focus:outline-none"
+           class="bg-black text-xl md:text-base w-16 no-spinner border border-dashed border-green-500 text-green-300 text-center px-2 me-2 focus:outline-none"
            type="number"
            bind:value={page}
            on:click={(e) => {
