@@ -20,7 +20,7 @@ export type QueryResult<T> = PerformanceParams & PaginationParams & {
 
 export type Artist = {
     artist_id: number
-    artist_name: number
+    artist_name: string
 }
 
 export type Track = {
