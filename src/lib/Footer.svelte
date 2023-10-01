@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {DEFAULT_BLOG_URL, DEFAULT_MCPL_URL, DEFAULT_TITLE} from '$lib/constants'
+    import { DEFAULT_1D1M_URL, DEFAULT_BLOG_URL, DEFAULT_MCPL_URL, DEFAULT_TITLE } from "$lib/constants"
 </script>
 
 <footer class="container mx-auto mt-5">
@@ -10,10 +10,17 @@
                class="text-green-300"
                target="_blank">changwoo</a>
         </p>
-        <p class="text-xs text-right">
-            <a href={DEFAULT_MCPL_URL}
-               class="text-green-300"
-               target="_blank">Music Camp Playlist</a>
-        </p>
+        <ul class="text-xs text-right leading-5">
+            <li>
+                <a href={DEFAULT_MCPL_URL}
+                   class="text-green-300"
+                   target="_blank">Music Camp Playlist</a>
+            </li>
+            <li>
+                <a href="{DEFAULT_1D1M_URL}"
+                   class="text-green-300"
+                   target="_blank">1D1M Check</a>
+            </li>
+        </ul>
     </div>
 </footer>
