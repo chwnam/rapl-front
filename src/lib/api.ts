@@ -74,6 +74,11 @@ export type TrackInfo = {
 
 export type QueryParams = { [key: string]: string | number }
 
+export type Criteria = 'artist' | 'track' | 'shuffle'
+export type Duration = string
+export type Exclude = 'yes' | 'no'
+export type Order = 'asc' | 'desc'
+
 export function getApiUrl(): string {
     return PUBLIC_API_URL.length ? PUBLIC_API_URL : DEFAULT_API_URL
 }
@@ -169,6 +174,28 @@ export async function queryArtistInfo(
         totalPages: null !== totalPages ? parseInt(totalPages) : 0,
         timeSpent: null !== timeSpent ? parseFloat(timeSpent) : 0.0,
     }
+}
+
+export async function queryRanking(
+    criteria: Criteria,
+    duration: Duration,
+    exclude: Exclude,
+    number: number,
+    order: Order,
+) {
+    const urlParams = buildParams({criteria, duration, exclude, number, order})
+
+    const r = await fetch(`${getBaseEndpoint()}/ranking?${urlParams}`, {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Origin': origin,
+        },
+    })
+
+    return await r.json()
 }
 
 function buildParams(params: { [key: string]: string | number }): string {

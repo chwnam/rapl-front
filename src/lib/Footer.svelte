@@ -1,5 +1,6 @@
 <script lang="ts">
     import { DEFAULT_1D1M_URL, DEFAULT_BLOG_URL, DEFAULT_MCPL_URL, DEFAULT_TITLE } from "$lib/constants"
+    import {homeUrl} from '$lib/utils'
 </script>
 
 <footer class="container mx-auto mt-5">
@@ -11,6 +12,10 @@
                target="_blank">changwoo</a>
         </p>
         <ul class="text-xs text-right leading-5">
+            <li>
+                <a href={homeUrl('/ranking')}
+                   class="text-green-300">Ranking</a>
+            </li>
             <li>
                 <a href={DEFAULT_MCPL_URL}
                    class="text-green-300"
